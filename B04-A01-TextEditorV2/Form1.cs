@@ -128,7 +128,7 @@
             switch (FormProvider.sd.X)
             {
                 case 0:
-                    if (k == false)
+                    if (!k)
                     {
                         int higher = arr.Max();
                         for (int i = 0; i < arr.Count; i++)
@@ -148,7 +148,7 @@
                     break;
 
                 case 1:
-                    if (k == false)
+                    if (!k)
                     {
                         double lower = arr.Min();
                         for (int i = 0; i < arr.Count; i++)
@@ -174,15 +174,7 @@
         {
 
             List<int> arr = new List<int>();
-            switch (FormProvider.sd.O)
-            {
-                case true:
-                    arr = textBox1.Text.AllIndexesOf(FormProvider.sd.word).ToList();
-                    break;
-                case false:
-                    arr = textBox1.Text.AllIndexesOfIC(FormProvider.sd.word).ToList();
-                    break;
-            }
+            arr = textBox1.Text.AllIndexes(FormProvider.sd.word, !FormProvider.sd.O).ToList();
             if (arr.Count == 0)
             {
                 FormProvider.sd.TopMost = false;
@@ -196,7 +188,7 @@
                 {
                     case 0:
                         n = getstart(arr);
-                        if (n < arr.Count + 1 && n != arr.Count - 1 && n != arr.Count)
+                        if (n < arr.Count - 1)
                         {
                             if (FormProvider.sd.L == false && z == 1)
                             {
@@ -208,7 +200,7 @@
                             }
                             else
                             {
-                                n = n + 1;
+                                n += 1;
                                 textBox1.SelectionStart = arr[n];
                                 textBox1.SelectionLength = FormProvider.sd.length;
                                 textBox1.Focus();
@@ -239,7 +231,7 @@
                             {
                                 if (n == arr.Count)
                                 {
-                                    n = n - 1;
+                                    n -=  1;
                                     textBox1.SelectionStart = arr[n];
                                     textBox1.SelectionLength = FormProvider.sd.length;
                                     textBox1.Focus();
@@ -261,7 +253,7 @@
                             }
                             else
                             {
-                                n = n - 1;
+                                n -= 1;
                                 textBox1.SelectionStart = arr[n];
                                 textBox1.SelectionLength = FormProvider.sd.length;
                                 textBox1.Focus();
@@ -272,20 +264,14 @@
                         {
                             if (n == 0)
                             {
-                                if (FormProvider.sd.L == true)
+                                if (FormProvider.sd.L)
                                 {
                                     n = arr.Count - 1;
                                     z = 1;
-                                    textBox1.SelectionStart = arr[n];
-                                    textBox1.SelectionLength = FormProvider.sd.length;
-                                    textBox1.Focus();
                                 }
-                                else
-                                {
-                                    textBox1.SelectionStart = arr[n];
-                                    textBox1.SelectionLength = FormProvider.sd.length;
-                                    textBox1.Focus();
-                                }
+                                textBox1.SelectionStart = arr[n];
+                                textBox1.SelectionLength = FormProvider.sd.length;
+                                textBox1.Focus();
 
 
                             }
@@ -316,7 +302,7 @@
             };
             FormProvider.sd.search.Click += (object sender, EventArgs e) =>
             {
-                if (FormProvider.sd.T == true)
+                if (FormProvider.sd.T)
                 {
 
                     suche();
@@ -333,7 +319,7 @@
             FormProvider.rd.Show();
             FormProvider.rd.search.Click += (object sender, EventArgs e) =>
             {
-                if (FormProvider.rd.T == true)
+                if (FormProvider.rd.T)
                 {
 
                     replace(false);
@@ -343,7 +329,7 @@
             };
             FormProvider.rd.replace.Click += (object sender, EventArgs e) =>
             {
-                if (FormProvider.rd.T == true)
+                if (FormProvider.rd.T)
                 {
 
                     replace(true);
@@ -353,7 +339,7 @@
             };
             FormProvider.rd.replaceall.Click += (object sender, EventArgs e) =>
             {
-                if (FormProvider.rd.T == true)
+                if (FormProvider.rd.T)
                 {
 
                     replaceall();
@@ -365,15 +351,9 @@
         private void replace(bool check)
         {
             List<int> arr = new List<int>();
-            switch (FormProvider.sd.O)
-            {
-                case true:
-                    arr = textBox1.Text.AllIndexesOf(FormProvider.sd.word).ToList();
-                    break;
-                case false:
-                    arr = textBox1.Text.AllIndexesOfIC(FormProvider.sd.word).ToList();
-                    break;
-            }
+            // using new method
+            arr = textBox1.Text.AllIndexes(FormProvider.sd.word, !FormProvider.sd.O).ToList();
+
             if (arr.Count == 0)
             {
                 FormProvider.sd.TopMost = false;
@@ -383,7 +363,7 @@
             else
             {
 
-                if (check == true)
+                if (check)
                 {
                     n = getstart(arr);
                     if (n < arr.Count)
@@ -395,7 +375,7 @@
                     }
                     else
                     {
-                        if (n == arr.Count && FormProvider.sd.L == true)
+                        if (n == arr.Count && FormProvider.sd.L)
                         {
                             n = 0;
                             textBox1.SelectionStart = arr[n];
@@ -405,10 +385,6 @@
 
                         }
                     }
-
-
-
-
                 }
                 else
                 {
@@ -422,15 +398,7 @@
         private void replaceall()
         {
             List<int> arr = new List<int>();
-            switch (FormProvider.sd.O)
-            {
-                case true:
-                    arr = textBox1.Text.AllIndexesOf(FormProvider.sd.word).ToList();
-                    break;
-                case false:
-                    arr = textBox1.Text.AllIndexesOfIC(FormProvider.sd.word).ToList();
-                    break;
-            }
+            arr = textBox1.Text.AllIndexes(FormProvider.sd.word, !FormProvider.sd.O).ToList();
             if (arr.Count == 0)
             {
                 FormProvider.sd.TopMost = false;
@@ -501,20 +469,11 @@
         }
         private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (a == 1)
-            {
-                if (warnung() == false)
+            if (!warnung() || a!= 1)
                 {
                     oeffnen();
                     a = 0;
                 }
-            }
-            else
-            {
-                oeffnen();
-                a = 0;
-            }
-
         }
         private void speichernUnterToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -535,13 +494,9 @@
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (a == 1)
+            if (a == 1 && warnung())
             {
-                if (warnung() == true)
-                {
-                    e.Cancel = true;
-                }
-
+                e.Cancel = true;
             }
         }
         private void neuToolStripMenuItem_Click(object sender, EventArgs e)
@@ -586,17 +541,8 @@
         }
         private void beendenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            switch (c)
-            {
-                case 0:
-                    Close();
-                    break;
-                case 1:
-                    if (warnung() == false)
-                    {
-                        Close();
-                    }
-                    break;
+            if(c == 0 || (c == 1 && !warnung())){
+                Close();
             }
         }
         private void debugToolStripMenuItem_Click(object sender, EventArgs e)
@@ -644,21 +590,13 @@
         private void löschenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int n = textBox1.SelectionLength;
-
-            switch (n)
-            {
-                case > 0:
-                    int i = textBox1.SelectionStart;
-                    textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, n);
-                    textBox1.SelectionStart = i;
-                    break;
-
-                case 0:
-                    int j = textBox1.SelectionStart;
-                    textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, 1);
-                    textBox1.SelectionStart = j;
-                    break;
+            if(n == 0) {
+                n = 1;
             }
+            int i = textBox1.SelectionStart;
+            textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, n);
+            textBox1.SelectionStart = i;
+            // are there cases where n<0?
         }
         private void suchenToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -670,7 +608,7 @@
         }
         private void weitersuchenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (g == true)
+            if (g)
             {
                 FormProvider.sd.X = 0;
                 suche();
@@ -695,7 +633,7 @@
         }
         private void vorherigeSuchenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (g == true)
+            if (g)
             {
                 FormProvider.sd.X = 1;
                 suche();
@@ -746,18 +684,10 @@
 
         private void zeilenumbruchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (q == false)
-            {
-                textBox1.WordWrap = true;
-                q = true;
-                zeilenumbruchToolStripMenuItem.Checked = true;
-            }
-            else
-            {
-                textBox1.WordWrap = false;
-                q = false;
-                zeilenumbruchToolStripMenuItem.Checked = false;
-            }
+            textBox1.WordWrap = !q;
+            zeilenumbruchToolStripMenuItem.Checked = !q;
+            q = !q;
+            
         }
         #endregion
 
@@ -781,19 +711,9 @@
         }
         private void statusleisteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (w == false)
-            {
-                statusleisteToolStripMenuItem.Checked = false;
-                statusStrip1.Visible = false;
-                w = true;
-            }
-            else
-            {
-                statusStrip1.Visible = true;
-                statusleisteToolStripMenuItem.Checked = true;
-                w = false;
-            }
-
+            statusleisteToolStripMenuItem.Checked = w;
+            statusStrip1.Visible = w;
+            w = !w;
         }
 
 
@@ -827,40 +747,31 @@
             textBox1.Paste();
         }
 
+        // Why does this function exist twice
         private void löschenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             int n = textBox1.SelectionLength;
-
-            switch (n)
-            {
-                case > 0:
-                    int i = textBox1.SelectionStart;
-                    textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, n);
-                    textBox1.SelectionStart = i;
-                    break;
-
-                case 0:
-                    int j = textBox1.SelectionStart;
-                    textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, 1);
-                    textBox1.SelectionStart = j;
-                    break;
+            if(n == 0) {
+                n = 1;
             }
+            int i = textBox1.SelectionStart;
+            textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, n);
+            textBox1.SelectionStart = i;
+            // are there cases where n<0?
         }
 
         private void rechtsnachlinksLesefolgeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (d == false)
+            if (!d)
             {
                 textBox1.RightToLeft = RightToLeft.Yes;
-                rechtsnachlinksLesefolgeToolStripMenuItem.Checked = true;
-                d = true;
             }
             else
             {
                 textBox1.RightToLeft = RightToLeft.No;
-                rechtsnachlinksLesefolgeToolStripMenuItem.Checked = false;
-                d = false;
             }
+                rechtsnachlinksLesefolgeToolStripMenuItem.Checked = !d;
+                d = !d;
         }
 
         #endregion
