@@ -12,6 +12,7 @@ namespace B04_A01_TextEditorV2
         {
             if (String.IsNullOrEmpty(value))
                 throw new ArgumentException("Der zu findende String darf nicht leer sein", "Wert");
+            // Why is there no condition here?
             for (int index = 0; ; index += 1)
             {
                 index = str.IndexOf(value, index);
@@ -24,6 +25,7 @@ namespace B04_A01_TextEditorV2
         {
             if (String.IsNullOrEmpty(value))
                 throw new ArgumentException("Der zu findende String darf nicht leer sein", "Wert");
+            // Why is there no condition here?
             for (int index = 0; ; index += 1)
             {
                 index = str.IndexOf(value, index, StringComparison.OrdinalIgnoreCase);
@@ -31,6 +33,47 @@ namespace B04_A01_TextEditorV2
                     break;
                 yield return index;
             }
+        }
+        // Does this work?
+        public static IEnumerable<int> AllIndexes(this string str, string value, bool shouldIgnoreOrdinalCase)
+        {
+           if (String.IsNullOrEmpty(value))
+                // What is "Wert" doing here?
+                throw new ArgumentException("Der zu findende String darf nicht leer sein", "Wert");
+            // Why is there no condition here?
+            for (int index = 0; ; index += 1)
+            {   
+                if (shouldIgnoreOrdinalCase) {
+                    index = str.IndexOf(value, index, StringComparison.OrdinalIgnoreCase);
+                } else {
+                    index = str.IndexOf(value, index);
+                }
+                if (index == -1)
+                    break;
+                yield return index;
+            }
+            // can we do this?:
+            /* while(index!= -1)
+            {
+                if (shouldIgnoreOrdinalCase) {
+                    index = str.IndexOf(value, index, StringComparison.OrdinalIgnoreCase);
+                } else {
+                    index = str.IndexOf(value, index);
+                }
+            }
+            return index;  */
+
+            //or this?
+            /* for (int index = 0; index!=-1 ; index += 1)
+            {   
+                if (shouldIgnoreOrdinalCase) {
+                    index = str.IndexOf(value, index, StringComparison.OrdinalIgnoreCase);
+                } else {
+                    index = str.IndexOf(value, index);
+                }
+            } 
+            return index;
+            */
         }            
     }
 }
