@@ -83,7 +83,7 @@
             this.MinimizeBox = false;
             this.Name = "changeLine";
             this.ShowInTaskbar = false;
-            this.Text = "Form4";
+            this.Text = "Wechseln zu";
             this.ResumeLayout(false);
             this.PerformLayout();
 
